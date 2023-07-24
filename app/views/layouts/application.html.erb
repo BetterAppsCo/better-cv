@@ -5,9 +5,15 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
-    <%= stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": "reload" %>
+    <%
+=begin%>
+ <%= stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": "reload" %> 
+<%
+=end%>
 
-    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag "application", "inter-font", "data-turbo-track": "reload" %>
+    <%= vite_stylesheet_tag 'stylesheets/application.tailwind.css' %>
+
     <%= vite_client_tag %>
     <%= vite_typescript_tag 'index.tsx' %>
     <!--
