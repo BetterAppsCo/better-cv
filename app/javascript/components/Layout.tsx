@@ -4,7 +4,6 @@ import {
   Bars3Icon,
   BellIcon,
   CalendarIcon,
-  ChartPieIcon,
   Cog6ToothIcon,
   DocumentDuplicateIcon,
   FolderIcon,
@@ -18,7 +17,7 @@ import {
 } from "@heroicons/react/20/solid";
 
 const navigation = [
-  { name: "Dashboard", href: "#", icon: HomeIcon, current: true },
+  { name: "Dashboard", href: "/app", icon: HomeIcon, current: true },
   { name: "Team", href: "#", icon: UsersIcon, current: false },
   { name: "Projects", href: "#", icon: FolderIcon, current: false },
   { name: "Calendar", href: "#", icon: CalendarIcon, current: false },
@@ -34,7 +33,11 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-export const Home = () => {
+interface LayoutProps {
+  children: React.ReactNode;
+}
+
+export const Layout = ({ children }: LayoutProps) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
@@ -314,7 +317,7 @@ export const Home = () => {
           </div>
 
           <main className="py-10">
-            <div className="px-4 sm:px-6 lg:px-8">{/* Your content */}</div>
+            <div className="px-4 sm:px-6 lg:px-8">{children}</div>
           </main>
         </div>
       </div>

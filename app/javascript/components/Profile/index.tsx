@@ -1,5 +1,6 @@
 import React from "react";
+import { Layout } from "../Layout";
 
 export const Profile = () => {
-  return <div>Profile</div>;
+  return <Layout>Profile</Layout>;
 };
