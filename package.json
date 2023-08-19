@@ -2,8 +2,12 @@
   "name": "app",
   "private": "true",
   "dependencies": {
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
     "@headlessui/react": "^1.7.15",
     "@heroicons/react": "^2.0.18",
+    "@mui/joy": "^5.0.0-beta.2",
+    "@mui/material": "^5.14.5",
     "autoprefixer": "^10.4.13",
     "axios": "^1.4.0",
     "postcss": "^8.4.19",
