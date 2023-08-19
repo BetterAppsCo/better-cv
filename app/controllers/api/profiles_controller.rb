@@ -1,9 +1,6 @@
-class Api::ProfileController < ApplicationController
-  def index
-    User.first
-  end
-
+class Api::ProfilesController < ApplicationController
   def show
-    User.first
+    user = User.first
+    render status: :ok, json: user
   end
 end
