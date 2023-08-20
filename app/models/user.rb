@@ -11,7 +11,7 @@ class User < ApplicationRecord
                     format: { with: VALID_EMAIL_REGEX }
   validates :password, presence: true, confirmation: true, length: { minimum: 6 }
   validates :password_confirmation, presence: true, on: :create
-  has_many :tasks, dependent: :destroy
+  has_many :profiles, dependent: :destroy
 
   private
     def to_lowercase
