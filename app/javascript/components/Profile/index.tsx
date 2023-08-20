@@ -1,31 +1,23 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Layout } from "../Layout";
-import { getCurrentUser } from "../../actions/profile";
+import { useProfile } from "../../hooks/useProfile";
 import Typography from "@mui/joy/Typography";
+import CircularProgress from "@mui/material/CircularProgress";
 
 export const Profile = () => {
-  const [user, setUser] = useState({
-    name: "",
-    email: "",
-  });
-  const getUser = async () => {
-    try {
-      const user = await getCurrentUser();
-      setUser(user);
-    } catch (err) {
-      console.log("Error on fetching user", err);
-    }
-  };
-
-  useEffect(() => {
-    getUser();
-  }, []);
+  const { isLoading, user } = useProfile();
 
   return (
     <Layout>
-      <Typography level="h2">Profile</Typography>
-      <Typography>{user.name}</Typography>
-      <Typography>{user.email}</Typography>
+      {isLoading ? (
+        <CircularProgress />
+      ) : (
+        <>
+          <Typography level="h2">Profile</Typography>
+          <Typography>{user.name}</Typography>
+          <Typography>{user.email}</Typography>
+        </>
+      )}
     </Layout>
   );
 };
