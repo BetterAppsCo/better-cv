@@ -26,5 +26,6 @@ staging:
 
 production:
   <<: *default
+  url: <%= ENV['DATABASE_URL'] %>
   database: <%= "#{repository_name}_production" %>
-  password: <%= ENV['#{repository_name}_DATABASE_PASSWORD'] %>
+  password: <%= ENV["#{repository_name}_DATABASE_PASSWORD"] %>
