@@ -1,0 +1,54 @@
+#!/bin/bash
+
+echo "🚀 Setting up Better CV application..."
+
+# Check if required tools are installed
+check_command() {
+  if ! command -v $1 &> /dev/null; then
+    echo "❌ $1 is not installed. Please install it first."
+    exit 1
+  else
+    echo "✅ $1 is installed"
+  fi
+}
+
+echo "Checking dependencies..."
+check_command "ruby"
+check_command "node"
+check_command "yarn"
+
+# Install Ruby dependencies
+echo "📦 Installing Ruby dependencies..."
+if ! bundle install; then
+  echo "❌ Failed to install Ruby dependencies"
+  exit 1
+fi
+
+# Install Node dependencies
+echo "📦 Installing Node.js dependencies..."
+if ! yarn install; then
+  echo "❌ Failed to install Node.js dependencies"
+  exit 1
+fi
+
+# Setup database
+echo "🗄️  Setting up database..."
+if ! bundle exec rails db:create; then
+  echo "❌ Failed to create database"
+  exit 1
+fi
+
+if ! bundle exec rails db:migrate; then
+  echo "❌ Failed to run migrations"
+  exit 1
+fi
+
+echo "✅ Setup complete!"
+echo ""
+echo "🎉 You can now start the development server with:"
+echo "   bin/dev"
+echo ""
+echo "🌐 The application will be available at:"
+echo "   http://localhost:3000"
+echo ""
+echo "📚 For deployment instructions, see DEPLOYMENT.md"

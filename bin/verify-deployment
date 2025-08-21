@@ -1,0 +1,48 @@
+#!/bin/bash
+
+# Deployment verification script
+# This script checks if the deployed application is working correctly
+
+APP_URL="${1:-https://better-cv.fly.dev}"
+MAX_ATTEMPTS=30
+ATTEMPT=1
+
+echo "🔍 Verifying deployment at: $APP_URL"
+echo "📡 Checking health endpoint..."
+
+while [ $ATTEMPT -le $MAX_ATTEMPTS ]; do
+  echo "Attempt $ATTEMPT/$MAX_ATTEMPTS..."
+  
+  # Check health endpoint
+  HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" "$APP_URL/health")
+  
+  if [ "$HTTP_STATUS" = "200" ]; then
+    echo "✅ Health check passed (HTTP $HTTP_STATUS)"
+    
+    # Get health response
+    HEALTH_RESPONSE=$(curl -s "$APP_URL/health")
+    echo "📊 Health response: $HEALTH_RESPONSE"
+    
+    # Check main page
+    echo "🏠 Checking main page..."
+    MAIN_HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" "$APP_URL/")
+    
+    if [ "$MAIN_HTTP_STATUS" = "200" ]; then
+      echo "✅ Main page accessible (HTTP $MAIN_HTTP_STATUS)"
+      echo "🎉 Deployment verification successful!"
+      echo "🌐 Application is live at: $APP_URL"
+      exit 0
+    else
+      echo "❌ Main page returned HTTP $MAIN_HTTP_STATUS"
+    fi
+  else
+    echo "⏳ Health check failed (HTTP $HTTP_STATUS), retrying in 10 seconds..."
+    sleep 10
+  fi
+  
+  ATTEMPT=$((ATTEMPT + 1))
+done
+
+echo "❌ Deployment verification failed after $MAX_ATTEMPTS attempts"
+echo "💡 Please check the deployment logs and ensure the application is running"
+exit 1

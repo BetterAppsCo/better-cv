@@ -76,3 +76,8 @@ jobs:
         run: flyctl deploy --remote-only
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+          
+      - name: Verify Deployment
+        run: |
+          chmod +x ./bin/verify-deployment
+          ./bin/verify-deployment https://better-cv.fly.dev

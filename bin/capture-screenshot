@@ -1,0 +1,47 @@
+#!/bin/bash
+
+# Screenshot capture script for deployed application
+# Requires playwright or puppeteer to be installed
+
+APP_URL="${1:-https://better-cv.fly.dev}"
+OUTPUT_DIR="./screenshots"
+TIMESTAMP=$(date +"%Y%m%d_%H%M%S")
+
+echo "📸 Capturing screenshot of deployed application..."
+echo "🌐 URL: $APP_URL"
+
+# Create screenshots directory
+mkdir -p "$OUTPUT_DIR"
+
+# Check if the app is accessible
+echo "🔍 Checking if application is accessible..."
+HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" "$APP_URL")
+
+if [ "$HTTP_STATUS" != "200" ]; then
+  echo "❌ Application is not accessible (HTTP $HTTP_STATUS)"
+  echo "💡 Please ensure the application is deployed and running"
+  exit 1
+fi
+
+echo "✅ Application is accessible"
+
+# Try to capture screenshot using different methods
+if command -v npx &> /dev/null && npx playwright --version &> /dev/null 2>&1; then
+  echo "📸 Using Playwright to capture screenshot..."
+  npx playwright screenshot "$APP_URL" "$OUTPUT_DIR/app_${TIMESTAMP}.png" --wait-for-timeout=5000
+  echo "✅ Screenshot saved to: $OUTPUT_DIR/app_${TIMESTAMP}.png"
+elif command -v google-chrome &> /dev/null; then
+  echo "📸 Using Chrome headless to capture screenshot..."
+  google-chrome --headless --disable-gpu --window-size=1280,720 --screenshot="$OUTPUT_DIR/app_${TIMESTAMP}.png" "$APP_URL"
+  echo "✅ Screenshot saved to: $OUTPUT_DIR/app_${TIMESTAMP}.png"
+else
+  echo "⚠️  No screenshot tool available"
+  echo "💡 To capture screenshots automatically, install:"
+  echo "   - Playwright: npm install -g playwright && npx playwright install"
+  echo "   - Or Chrome/Chromium for headless mode"
+  echo ""
+  echo "🌐 You can manually visit the application at: $APP_URL"
+fi
+
+echo "🎉 Application verification complete!"
+echo "🌐 Live URL: $APP_URL"
